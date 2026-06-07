@@ -107,8 +107,8 @@ http://localhost:3000
 
 ## Imagem da Home
 
-!(./public/img/home.png)
+![](./public/img/home.png)
 
 ## Imagem da página de detalhes
 
-!(./public/img/detalhes.png)
+![](./public/img/detalhes.png)
