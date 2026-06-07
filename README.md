@@ -1,98 +1,114 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/3AYGT_Y7)
-# Trabalho Prático - Semana 13
+# Firefox — Versões & Extensões
 
-Nessa etapa, você irá evoluir o projeto do semestre, montando o ambiente de desenvolvimento mais completo, típico de projetos profissionais. Nesse processo, vamos utilizar um **servidor backend simulado** com o JSON Server que fornece uma APIs RESTful a partir de um arquivo JSON.
+**Aluno:** Arthur Gabriel  
+**Matrícula:** 924860  
+**Curso:** Engenharia de Software — 1º Período — Turma Manhã
 
-Para esse projeto, além de mudarmos o JSON para o JSON Server, vamos permitir o cadastro e alteração de dados da entidade principal (CRUD).
+---
 
-## Informações do trabalho
+## Como rodar o projeto
 
-- Nome:
-- Matricula:
-- Proposta de projeto escolhida:
-- Breve descrição sobre seu projeto:
+### 1. Instalar dependências (só na primeira vez)
 
-**Registros do trabalho**
+```bash
+npm install -g json-server
+```
 
-<< DADOS DO DB.JSON (ENTIDADE PRINCIPAL E SECUNDÁRIA) >>
+### 2. Iniciar o JSON Server
+
+Na pasta raiz do projeto:
+
+```bash
+json-server --watch db/db.json --port 3000 --static public
+```
+
+### 3. Abrir no navegador
+
+```
+http://localhost:3000
+```
+
+---
+
+## Estrutura do projeto
+
+```
+/
+├── public/                  ← Front-end servido pelo JSON Server
+│   ├── index.html           ← Home com carousel e cards
+│   ├── script.js            ← Lógica da home (fetch + render)
+│   ├── details.html         ← Página de detalhes de uma versão
+│   ├── details.js           ← Lógica de detalhes (URLSearchParams + fetch)
+│   ├── cadastro_versao.html ← Formulário de cadastro
+│   ├── cadastro_versao.js   ← Lógica do cadastro (POST via fetch)
+│   ├── style.css            ← Estilos visuais
+│   └── img/                 ← Imagens dos logos
+│       ├── 2013.png
+│       ├── 2019.png
+│       ├── 2021.png
+│       └── mozilla.png
+└── db/
+    └── db.json              ← Banco de dados da API REST
+```
+
+---
+
+## Estrutura do db.json
+
+### Coleções
+
+| Coleção | O que guarda |
+|---|---|
+| `versoes` | Cada versão do Firefox com nome, descrição, imagem, categoria, tags e extensões associadas |
+| `categorias` | Lista das categorias possíveis com nome, descrição e cor |
+| `comentarios` | Comentários de usuários vinculados a uma versão por `versaoId` |
+| `avaliacoes` | Nota (1-5) de cada versão vinculada por `versaoId` |
+
+### Modelo de um item da coleção `versoes`
 
 ```json
 {
-  "cidades": [
+  "id": 1,
+  "nome": "Firefox 57 — Quantum",
+  "versao": "57.0",
+  "descricaoCurta": "Motor Quantum: 2x mais rápido e 30% menos memória que o Chrome.",
+  "descricaoCompleta": "Texto detalhado...",
+  "imagem": "img/2013.png",
+  "categoria": "Performance",
+  "lancamento": "2017-11-14",
+  "destaque": true,
+  "cor": "#ff7139",
+  "tags": ["quantum", "rust", "performance"],
+  "extensoes": [
     {
-      "id": 1,
-      "nome": "Paris",
-      "descricao": "Capital francesa famosa por arte, gastronomia e arquitetura icônica.",
-      "conteudo": "Paris oferece museus de classe mundial, boulevards arborizados e cafés charmosos. Ideal para quem busca história, cultura e experiências gastronômicas.",
-      "pais": "França",
-      "destaque": true,
-      "data": "2025-03-30",
-      "imagemPrincipal": "img/paris.jpg"
-    }
-  ],
-  "atracoes": [
-    {
-      "id": 1,
-      "cidadeId": 1,
-      "nome": "Torre Eiffel",
-      "descricao": "Monumento símbolo de Paris com mirantes panorâmicos.",
-      "imagem": "img/atracoes/torre_eiffel.jpg"
+      "nome": "uBlock Origin",
+      "icone": "bi-shield-fill-check",
+      "cor": "#e44d26",
+      "descricao": "Bloqueador de anúncios leve e open-source."
     }
   ]
 }
 ```
 
-<< COLOQUE A IMAGEM DA HOME AQUI >>
+---
 
-<< COLOQUE A IMAGEM DA TELA DE DETALHES AQUI >>
+## Rotas da API disponíveis
 
+| Método | Rota | Descrição |
+|---|---|---|
+| GET | `/versoes` | Lista todas as versões |
+| GET | `/versoes/:id` | Busca uma versão pelo ID |
+| POST | `/versoes` | Cadastra uma nova versão |
+| GET | `/categorias` | Lista todas as categorias |
+| GET | `/comentarios?versaoId=:id` | Busca comentários de uma versão |
+| GET | `/avaliacoes?versaoId=:id` | Busca avaliação de uma versão |
 
+---
 
-## **Orientações Gerais**
+## Imagem da Home
 
-Nesse projeto você vai encontrar a seguinte estrutura base:
+> Adicione aqui um print da página principal mostrando os cards.
 
-* **Pasta db**
-  Essa pasta contem um único arquivo: `db.json`. Esse arquivo serve de banco de dados simulado e nele você deve colocar as estruturas de dados que o seu projeto manipula.
-  * **OBS**: Já incluímos a estrutura de usuários como exemplo e para que você possa utlizar no seu projeto. Se precisar, faça os ajustes necessários para seu projeto.
-* **Pasta public**
-  Nesta pasta você deve colocar todos os arquivos do seu site (front end). Aqui vão os arquivos HTML, CSS, JavaScript, imagens, vídeos e tudo o mais que precisar para a interface do usuário.
-* **Arquivo README.md**
-  Este arquivo em que são colocadas as informações de quem está desenvolvendo esse projeto e os registros solicitados no enunciado da tarefa.
-* **Arquivo .gitignore**
-  Configuração do que deve ser ignorado pelo git evitando que seja enviado para o servidor no GitHub.
-* **Arquivo package.json**
-  Considerado o manifesto do projeto ou arquivo de configuração. Nesle são incluídas as informações básicas sobre o projeto (descrição, versão, palavras-chave, licença, copyright), a lista de pacotes dos quais o projeto depende tanto para desenvolvimento quanto execução, uma lista de  do projeto, scripts entre outras opções.
-  * **OBS**: Esse arquivo é criado assim que o projeto é iniciado por meio do comando `npm init`.
-  * **OBS2**: Esse arquivo já traz a informação de necessidade do JSONServer.
-* **Pasta node_modules**
-  Local onde ficam os pacotes dos quais o projeto depende. Evite enviar essa pasta para o repositório remoto. Essa pasta é reconstruída toda vez que se executa o comando `npm install`.
+## Imagem da página de detalhes
 
-**Ambiente de Desenvolvimento (IMPORTANTE)**
-
-> A partir de agora, **NÃO utilizamos mais o LiveServer/FiveServer** durante o processo de desenvolvimento. O próprio JSONServer faz o papel de servidor.
-
-Para iniciar o JSONServer e acessar os arquivos do seu site, siga os seguintes passos:
-
-1. Abra a pasta do projeto dentro da sua IDE (por exemplo, Visual Studio Code)
-2. Abra uma janela de teminal e certifique-se que a pasta do terminal é a pasta do projeto
-3. Execute o comando `npm install`
-   Isso vai reconstruir a pasta node_modules e instalar todos os pacotes necessários para o nosso ambiente de desenvolvimento (Ex: JSONServer).
-4. Execute o comando `npm start`
-   Isso vai executar o JSONServer e permitir que você consiga acessar o seu site no navegador.
-5. Para testar o projeto:
-   1. **Site Front End**: abra um navegador e acesse o seu site pela seguinte URL: 
-      [http://localhost:3000]()
-   2. **Site Back End**: abra o navegador e acesse as informações da estrutura de usuários por meio da API REST do JSONServer a partir da seguinte URL: 
-      [http://localhost:3000/usuarios](http://localhost:3000/usuarios)
-
-Ao criar suas estruturas de dados no arquivo db.json, você poderá obter estes dados através do endereço: http://localhost:3000/SUA_ESTRUTURA, tal qual como foi feito com a estrutura de usuários. **IMPORTANTE**: Ao editar o arquivo db.json, é necessário parar e reiniciar o JSONServer.
-
-**IMPORTANTE:** Assim como informado anteriormente, capriche na etapa pois você vai precisar dessa parte para as próximas semanas. 
-
-**IMPORTANTE:** Você deve trabalhar:
-
-* na pasta **`public`,** para os arquivos de front end, mantendo os arquivos **`index.html`**, **`detalhes.html`**, **`styles.css`** e **`app.js`** com estes nomes, e
-* na pasta **`db`**, com o arquivo `db.json`.
-
-Deixe todos os demais arquivos e pastas desse repositório inalterados. **PRESTE MUITA ATENÇÃO NISSO.**
+> Adicione aqui um print da página de detalhes de uma versão.
