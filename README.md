@@ -107,8 +107,8 @@ http://localhost:3000
 
 ## Imagem da Home
 
-> Adicione aqui um print da página principal mostrando os cards.
+./public/img/home.png
 
 ## Imagem da página de detalhes
 
-> Adicione aqui um print da página de detalhes de uma versão.
+./public/img/detalhes.png
